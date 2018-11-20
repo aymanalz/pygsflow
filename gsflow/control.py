@@ -21,7 +21,7 @@ class Control(object):
         self._gslow_files = ['csv_output_file', 'data_file', 'gsflow_output_file',
                              'model_output_file', 'modflow_name', 'param_file', 'stat_var_file',
                              'var_init_file', 'var_save_file',
-                             'ani_output_file']
+                             'ani_output_file', 'mapOutVar_names', 'param_print_file', 'stats_output_file']
 
         self.headers = ["Control File"]
         if not (records_list == None):

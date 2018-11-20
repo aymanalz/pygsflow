@@ -48,7 +48,7 @@ class Gsflow():
         print("Control file is loaded")
 
         # load prms
-        self.prms = Prms(Control=self.control)
+        self.prms = Prms(control=self.control)
         print("PRMS files are loaded")
 
         # load modflow
@@ -180,13 +180,15 @@ class Gsflow():
 
         # only change the directory
         if (basename == None) and (not (workspace == None)):
+            if not (os.path.isdir(workspace)):
+                os.mkdir(workspace)
             fnn = os.path.basename(self.control.control_file)
             self.control.control_file = os.path.join(workspace, fnn)
             self.control_file = os.path.join(workspace, fnn)
             self.prms.control_file = self.control_file
             # change parameters
             parm_file_list = []
-            for par_record in self.prms.Parameters.parameters_list:
+            for par_record in self.prms.parameters.parameters_list:
                 curr_file = os.path.basename(par_record.file_name)
                 curr_file = os.path.join(workspace, curr_file)
                 par_record.file_name = curr_file
@@ -207,10 +209,13 @@ class Gsflow():
                     file_values = self.control.get_values(rec_name)
                     file_value = []
                     for fil in file_values:
-                        file_value.append(os.path.basename(fil))
+                        cnt_dir = os.path.dirname(self.control_file)
+                        va = os.path.join(cnt_dir, os.path.basename(fil))
+                        file_value.append(va)
                     self.control.set_values(rec_name, file_value)
 
             # write
+            self.prms.control = self.control
             self._write_all()
             return
 
@@ -258,12 +263,14 @@ class Gsflow():
 
                         file_value.append(os.path.basename(filvalue))
                     self.control.set_values(rec_name, file_value)
-
+            self.prms.control = self.control
             self._write_all()
             return
 
         # change both directory & basename
         if (not (basename == None)) and (not (workspace == None)):
+            if not (os.path.isdir(workspace)):
+                os.mkdir(workspace)
             cnt_file = basename + "_cont.control"
             self.control.control_file = os.path.join(workspace, cnt_file)
             self.prms.control_file = self.control.control_file
@@ -327,7 +334,7 @@ class Gsflow():
 
                                 file_value.append(os.path.basename(filvalue))
                             self.control.set_values(rec_name, file_value)
-
+            self.prms.control = self.control
             self._write_all()
             return
 
@@ -339,7 +346,7 @@ class Gsflow():
 
         # self write parameters
         print("Parameters files are written...")
-        self.prms.Parameters.write()
+        self.prms.parameters.write()
 
         # write data
         print("Data file is written...")
