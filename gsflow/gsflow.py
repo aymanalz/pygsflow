@@ -4,6 +4,7 @@ import logging
 from .control import Control
 from .prms import Prms
 from .supports import _get_file_abs
+from .prms_help import Helper
 import flopy
 import subprocess as sp
 
@@ -26,6 +27,7 @@ class Gsflow():
                  prms_load_only=None, gsflow_exe=None):
 
         print ("PyGSFLOW ------ V0.0")
+        self.Help = Helper()
 
         self.control_file = os.path.abspath(control_file)
         self.ws = None

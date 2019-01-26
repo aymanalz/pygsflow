@@ -169,8 +169,6 @@ Desc  : Number of wind-speed measurement stations
 Name  : one
 Value : 1
 Desc  : Dimension of scalar parameters and variables
-Fixed
-
 --------------- PARAMETERS ---------------
 
 Name      : K_coef
@@ -2104,7 +2102,7 @@ Default   : 1
 
 Name      : ndist_psta
 Module    : ide_dist
-Descr     : Number of stations for inverse distance calcs: precipitation
+Descr     : Number of stations for inverse distance calcs, precipitation
 Help      : Number of precipitation measurement stations for inverse distance calculations
 Ndimen    : 1
 Dimensions: one - 1
@@ -2119,7 +2117,7 @@ Bounded   : nrain
 
 Name      : ndist_tsta
 Module    : ide_dist
-Descr     : Number of stations for inverse distance calcs: temperature
+Descr     : Number of stations for inverse distance calcs, temperature
 Help      : Number of temperature measurement stations for inverse distance calculations
 Ndimen    : 1
 Dimensions: one - 1
@@ -2420,7 +2418,7 @@ Default   : 0.020000
 
 Name      : prcp_wght_dist
 Module    : ide_dist
-Descr     : Weighting function for inverse distance: precipitation
+Descr     : Weighting function for inverse distance, precipitation
 Help      : Monthly (January to December) precipitation weighting function for inverse distance calculations
 Ndimen    : 1
 Dimensions: nmonths - 12
@@ -3556,7 +3554,7 @@ Default   : 0
 
 Name      : temp_wght_dist
 Module    : ide_dist
-Descr     : Weighting function for inverse distance: temperature
+Descr     : Weighting function for inverse distance, temperature
 Help      : Monthly (January to December) temperature weighting function for inverse distance calculations
 Ndimen    : 1
 Dimensions: nmonths - 12
