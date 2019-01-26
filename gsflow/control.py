@@ -63,17 +63,16 @@ class Control(object):
         fid = open(fn, 'r')
         content = fid.readlines()
         fid.close()
-        content = content.__iter__()
+        content = iter(content)
 
         headers = []
         records_list = []
-        control_field_order = []
         EndOfFile = False
         _read_comments = True
         while True:
             if EndOfFile:
                 break
-            record = content.next().strip()
+            record = next(content).strip()
             # read comments
             if _read_comments:
                 if "####" in record:
@@ -85,14 +84,14 @@ class Control(object):
 
             # read records information
             field_name = record
-            nvalues = int(content.next().strip())
-            data_type = int(content.next().strip())
+            nvalues = int(next(content).strip())
+            data_type = int(next(content).strip())
             values = []
 
             # loop over values
             while True:
                 try:
-                    record = content.next().strip()
+                    record = next(content).strip()
                     if record == '':
                         continue  # empty line
                 except:  # end of the file
@@ -113,6 +112,7 @@ class Control(object):
 
     def _make_pths_abs(self):
         for file in self._gslow_files:
+
             if file in self._record_names:
                 gs_fn = self.get_values(file)
                 flist = []
@@ -122,6 +122,9 @@ class Control(object):
                 self.set_values(file, flist)
 
     def _get_file_abs(self, control_file=None, fn=None):
+        fn = os.path.normpath(fn)
+        if os.path.isabs(fn):
+            return fn
         control_folder = os.path.dirname(control_file)
         abs_file = os.path.abspath(os.path.join(control_folder, fn))
         return abs_file
@@ -278,7 +281,7 @@ class Control_record(object):
             raise ValueError("Generate an error, name of the record ( {} ) is not a string".format(name))
 
         # record values
-        self.__values = values
+        self.h_value = values
         self._check_values(values)
 
 
@@ -296,11 +299,11 @@ class Control_record(object):
             self.datatype = datatype
         else:
             print("Warning: data type will be infered from data supplied")
-            if 'float' in self.__values.dtype.name:
+            if 'float' in self.h_value.dtype.name:
                 self.datatype = 2
-            elif 'int' in self.__values.dtype.name:
+            elif 'int' in self.h_value.dtype.name:
                 self.datatype = 1
-            elif 'string' in self.__values.dtype.name:
+            elif 'string' in self.h_value.dtype.name:
                 self.datatype = 4
             else:
                 raise ValueError("Value type is not recognized...{}", self.values.dtype)
@@ -309,11 +312,11 @@ class Control_record(object):
 
     def _check_values(self, values):
         if isinstance(values, np.ndarray):
-            self.__values = values
+            self.h_value = values
         elif isinstance(values, list):
             try:
                 values = np.array(values)
-                self.__values = values
+                self.h_value = values
                 pass
             except:
                 raise ValueError("Cannot convert the list to 1D numpy array ")
@@ -325,25 +328,26 @@ class Control_record(object):
 
     def _force_data_type(self):
         """ make sure that the datatype is consisitent with used type"""
-        self.__values
+        self.h_value
 
         if self.datatype == 1:
-            self.__values = self.__values.astype(int)
+            self.h_value = self.h_value.astype(int)
         elif self.datatype == 2 or self.datatype == 3:
-            self.__values = self.__values.astype(float)
+            self.h_value = self.h_value.astype(float)
         elif self.datatype == 4:
-            self.__values = self.__values.astype(str)
+            self.h_value = self.h_value.astype(str)
         else:
             raise ValueError("Value type is not recognized...{}", self.values.dtype)
 
     @property
     def values(self):
         self._force_data_type()
-        return self.__values
+        return self.h_value
 
     @values.setter
     def values(self, values):
-        self.__values = values
+        self.h_value = values
+        #print(self.h_value)
         self._check_values(values)
 
         if len(values) != self.nvalues:
@@ -354,11 +358,11 @@ class Control_record(object):
         self._force_data_type()
 
     def _check_dtype(self):
-        if 'float' in self.__values.dtype.name:
+        if 'float' in self.h_value.dtype.name:
             self.datatype = 2
-        elif 'int' in self.__values.dtype.name:
+        elif 'int' in self.h_value.dtype.name:
             self.datatype = 1
-        elif 'string' in self.__values.dtype.name:
+        elif 'str' in self.h_value.dtype.name:
             self.datatype = 4
         else:
             raise ValueError("Value type is not recognized...{}", self.values.dtype)

@@ -1,4 +1,4 @@
-from control import Control
+from .control import Control
 import pandas as pd
 import datetime
 import matplotlib.pyplot as plt

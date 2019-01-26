@@ -1,6 +1,7 @@
 from gsflow import Gsflow
-import matplotlib.pyplot as plt
-control_file = r"D:\Workspace\Codes\gsflow\gsflow\data\data_backup\data\sagehen\windows\gsflow.control"
+#import matplotlib.pyplot as plt
+#control_file = r"D:\Workspace\Codes\gsflow\gsflow\data\data_backup\data\sagehen\windows\gsflow.control"
+control_file = r"D:\training3\gsflowID2447_classrepo\exercises\saghen_pyGSFLOW\gsflow_files2\saghen_new_cont.control"
 #control_file = r"D:\Workspace\Codes\gsflow\gsflow\data\data_backup\data\sagehen\windows\gsflow_prms.control"
 #control_file = r"D:\Workspace\training\gsflowID2447_classrepo\exercises\saghen_pygsflow\data\model_gsflow_arcpy" \
 #               r"\windows\sagehen_run.control"

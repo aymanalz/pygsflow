@@ -26,7 +26,12 @@ class Parameters(object):
 
         elif os.path.isfile(parameter_files[0]):
             self._parameter_files = parameter_files
+            print("Work on loadind the parameter files .....")
             self.from_file()
+        else:
+            print ("Cannot find the file {}".format(parameter_files[0]))
+            raise ValueError(" Cannot find the file {}".format(parameter_files[0]))
+
 
         self._record_names = []
         if not (self.parameters_list == None):
@@ -77,7 +82,7 @@ class Parameters(object):
             fid = open(file, 'r')
             content = fid.readlines()
             fid.close()
-            content = content.__iter__()
+            content = iter(content)
 
 
             EndOfFile = False
@@ -87,7 +92,7 @@ class Parameters(object):
             while True:
 
                 try:
-                    record = content.next().strip()
+                    record = next(content).strip()
                 except:
                     break
                 if record == '':
@@ -125,7 +130,7 @@ class Parameters(object):
                 if in_dim_section:
                     # Reading Dimensions Section
                     field_name = record.strip()
-                    value = int(content.next().strip())
+                    value = int(next(content).strip())
                     curr_record = Parm_record(name=field_name, values=[value], file_name=file)
                     parameters_list.append(curr_record)
                     all_dims[field_name] = value
@@ -136,22 +141,22 @@ class Parameters(object):
                     field_name = record.strip().split()[0]
 
                     try:
-                        ndim = int(content.next().strip())
+                        ndim = int(next(content).strip())
                     except:
                         pass
                     dim_nms = []
                     for dim_ in range(ndim):
-                        dim_nms.append((content.next().strip()))
+                        dim_nms.append((next(content).strip()))
                     try:
-                        nvalues = int(content.next().strip())
+                        nvalues = int(next(content).strip())
                     except:
                         pass
-                    datatype = int(content.next().strip())
+                    datatype = int(next(content).strip())
                     value = []
                     # read values sequentially
                     val_count = 0
                     while val_count < nvalues:
-                        val_ = content.next().strip()
+                        val_ = next(content).strip()
                         if '*' in val_:
                             comp_val = val_.split('*')
                             value = value + [comp_val[1]] * int(comp_val[0])
