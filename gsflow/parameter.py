@@ -337,7 +337,7 @@ class Parm_record(object):
 
         """
 
-        self.DATA_TYPES_options = {1: 'integer', 2: 'real', 3: 'double', '4': 'string'}
+        self.DATA_TYPES_options = {1: 'integer', 2: 'real', 3: 'double', 4: 'string'}
         self.SECTIONS_options = ['Dimensions', 'Parameters']
         self.file_name = file_name
         self._dimensions = dimensions
